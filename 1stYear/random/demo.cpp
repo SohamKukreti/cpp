@@ -1,31 +1,32 @@
 #include <iostream>
 using namespace std;
-
-int *twicearr(int *arr,int len){
-    int *arr2 = new int[len*2];
-    int i;
-    for(i = 0;i<len;i++){
-        arr2[i] = arr[i];
-    }
-    for(int j = 0;j<len;j++){
-        arr2[i+j] = arr[j]*2; 
-    }
-    return arr2;
-}
-
 int main(){
-    int len;
-    cout << "Enter length of array : ";
-    cin >> len;
-    int *arr = new int[len];
-    for(int i = 0;i<len;i++){
-        cout << "Enter element of array : ";
-        cin >> arr[i];
+    int n;
+    cout << "Enter how many elements you want in the array: ";
+    cin >> n;
+    int * arr1 = new int[n];
+    int *arr =new int[n];
+    for(int i = 0;i<n;i++){
+        arr[i] = rand()%10;
     }
-    int * arr2 = twicearr(arr,len);
-    for(int i = 0;i<len*2;i++){
-        cout << arr2[i];
+    for(int i = 0;i<n;i++){
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+    int j = 0;
+    for(int i = 0;i<n;i++){
+        if(arr[i]%2 == 0){
+            cout << arr[i];
+        }
+        else{
+           arr1[j++] = arr[i];
+        }
+    }
+    cout << endl;
+    for(int i = 0;i<j;i++){
+        cout << arr1[i] << " ";
     }
     cout << endl;
     return 0;
-}
+
+    }
