@@ -41,31 +41,21 @@ public:
 
 };
 
-bool checkPrime(int x){
-    bool ifPrime = true;
-    for(int i = 2;i<x;i++){
-        if(x%i == 0){
-            ifPrime = false;
-        }
-    }
-    return ifPrime;
-}
 
 
 
 int main(){
     Stack s1;
+    int numsys;
+    cout << "Which number system do you want to convert to(b/w 2 and 9): ";
+    cin >> numsys;
     int n;
-    cout << "Enter a number: ";
+    cout << "Enter a number in decimal notation: ";
     cin >> n;
-    for(int i = 2;i<=n;i++){
-        if(n%i == 0){
-            bool pf = checkPrime(i);
-            if(pf){
-                s1.push(i);
-            }
-        }
-
+    while(n > 0){
+        int rem = n%numsys;
+        n = n/numsys;
+        s1.push(rem);
     }
     s1.display();
     cout << endl;
