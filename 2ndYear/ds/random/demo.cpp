@@ -1,75 +1,87 @@
 #include <iostream>
 using namespace std;
 
-struct Node{
-int data;
-Node *link;
-};
-
-class circularlinkedlist{
-private:
-    Node *rear;
+class Queue {
 public:
-    circularlinkedlist(){
-        rear = NULL;
+    int *arr;
+    int f;
+    int r;
+    int max_size;
 
+    Queue(int x) {
+        arr = new int[x];
+        max_size = x;
+        f = -1;
+        r = -1;
     }
 
-    void addNode(int data){
-        Node *n1 = new Node;
-        if(rear == NULL){
-            rear = n1;
-            rear->link = rear;
+    bool isFull() {
+        if ((r == max_size - 1 && f == 0) || (r + 1) % max_size == f) return true;
+        else return false;
+    }
+
+    void enqueue(int x) {
+        if (isFull()) cout << "Queue is full!";
+        if (f == -1) {
+            f = 0;  // Update front when enqueueing the first element
+            r = 0;
+            arr[r] = x;
+        } else {
+            r = (r + 1) % max_size;
+            arr[r] = x;
         }
-        else{
-            Node *temp = rear->link;
-            rear->link = n1;
-            n1->link = temp;
+    }
+
+    bool isEmpty() {
+        if (f == -1) return true;
+        else return false;
+    }
+
+    int dequeue() {
+        if (isEmpty()) {
+            cout << "Queue is empty!";
+            return -1;  // Return a default value when the queue is empty
+        }
+        if (f == r) {
+            int x = arr[f];
+            f = -1;
+            r = -1;
+            return x;
+        } else {
+            int x = arr[f];
+            f = (f + 1) % max_size;
+            return x;
         }
     }
 
-    void display(){
-        Node *temp2 = rear->link;
-        do{ 
-            cout << temp2->data << " ";
-            temp2 = temp2->link;
-        }while(temp2 != rear->link);
+    void display() {
+        if (isEmpty()) {
+            cout << "Queue is empty!";
+            return;
+        }
 
-    }
-    void splitList(){
-        Node *temp = rear->link;
-        Node *fasttemp = rear->link;
-        circularlinkedlist c1;
-        circularlinkedlist c2;
-        do{ 
-            fasttemp = fasttemp->link;
-            fasttemp = fasttemp->link;
-            temp = temp->link;
-            c1.addNode(temp->data);
-        }while(fasttemp != rear->link);
-        Node *temp2 = temp->link;
-        do{ 
-            c2.addNode(temp2->data);
-            temp2 = temp2->link;
-        }while(temp2 != rear->link);
+        int i = f;
+        do {
+            cout << arr[i] << " ";
+            i = (i + 1) % max_size;
+        } while (i != (r + 1) % max_size);
 
-        c1.display();
         cout << endl;
-        c2.display();
-
-        
-
     }
 };
 
-
-int main(){
-    circularlinkedlist c1;
-    for(int i  = 1;i<=5 ;i++){
-        c1.addNode(i);
+int main() {
+    Queue q1(5);
+    for (int i = 0; i < 5; i++) {
+        q1.enqueue(i * 10);
     }
-    c1.display();
+    q1.dequeue();
+    q1.dequeue();
+    q1.enqueue(1);
+    q1.enqueue(2);
+
     cout << endl;
-    c1.splitList();
+    q1.display();
+
     return 0;
 }
