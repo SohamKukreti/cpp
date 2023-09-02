@@ -93,6 +93,6 @@ int main(){
 
     }
     q2.display();
-
+    cout << endl;
     return 0;
     }

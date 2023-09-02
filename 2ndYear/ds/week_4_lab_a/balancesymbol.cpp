@@ -45,33 +45,8 @@ int main(){
         if(str1[i] == '(' || str1[i] == '{' || str1[i] == '['){
             s1.push(str1[i]);
         }
-        else if(str1[i] == ')'){
-            char c = s1.pop();
-            if(c == '[' || c == '{'){
-                cout << "invalid balancing bracket";
-                break;
-            }
-            }
-            else if(str1[i] == '}'){
-                char c = s1.pop();
-                if(c == '[' || c == '('){
-                cout << "invalid balancing bracket";
-                break;
-            }
-
-
-            }
-            else if(str1[i] == ']'){
-                char c = s1.pop();
-                if(c == '{' || c == '('){
-                cout << "invalid balancing bracket";
-                break;
-            }
-
-
-            }
-            }
-
+    }
+    s1.display();
 
 
     return 0;
