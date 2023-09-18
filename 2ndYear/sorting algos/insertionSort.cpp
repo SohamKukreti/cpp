@@ -5,11 +5,11 @@ void insertionSort(int *arr, int len){
     for(int i = 1;i<len-1;i++){
         int j = i-1;
         int temp = arr[j+1];
-        while(arr[j+1]<arr[j] && j>0){
+        while(temp<arr[j] && j>=0){
             arr[j+1] = arr[j];
             j--;
         }
-        arr[j] = temp;
+        arr[j+1] = temp;
     }
 }
 
@@ -29,6 +29,6 @@ int main(){
         cout <<  arr[i] << " ";
     }
     cout << endl;
-    return 0;    
+    return 0;
     return 0;
 }
