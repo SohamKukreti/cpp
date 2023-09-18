@@ -1,40 +1,32 @@
 #include <iostream>
 using namespace std;
-void SelectionSort(int *arr, int len){
-    int cnt = 0;
-    for(int i = 0;i<len-1;i++){
-        int j = 0;
-        int min = i;
-        for(j = i+1;j<len;j++){
-            if(arr[j] < arr[min]){
-                min = j;
-            }
-        }
-        if(i != min){
-            int temp = arr[i];
-            arr[i] = arr[min];
-            arr[min] = temp;
-            cnt++;
-        }
-        
+
+struct Node{
+    int info;
+    Node * next;
+};
+
+
+
+void f1(Node *start){
+    if(start == NULL) return ;
+    else{
+        cout << start->info;
+        f1(start->next);
+        cout << start->info;
+        f1(start->next);
+        cout << start->info;
     }
-    cout << cnt << endl;
 }
 int main(){
-    int *arr;
-    int len;
-    cout << "enter length of array : ";
-    cin >> len;
-    arr = new int[len];
-    cout << "enter array : " << endl;
-    for(int i = 0;i<len;i++){
-        cin >> arr[i];
-    }
-    SelectionSort(arr,len);
+    Node *start = new Node;
+    Node *n1 = new Node;
+    Node *n2 = new Node;
+    start->info = 5;
+    n1->info = 6;
+    n2->info = 7;
+    start->next = n1;
+    n1->next = n2;
 
-    // cout << "Sorted Array : ";
-    // for(int i = 0;i<len;i++){
-    //     cout <<  arr[i] << " ";
-    // }
-    return 0;
+    f1(start);
 }
