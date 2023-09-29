@@ -113,8 +113,6 @@ int main(){
     for(int i = 0;i<9;i++){
         l1.addNode(i+1);
     }
-    l1.InsertSpecific(15,5);
     l1.display();
-    l1.flatten();
     return 0;
 }
