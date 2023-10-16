@@ -28,8 +28,17 @@ public:
     }
 
     void findHeight(Node *root){
-        
+
     }
+
+    bool findAncestor(Node *root,int x){
+        if(root == NULL) return false;
+        if(root->data == x) return true;
+        if(findAncestor(root->lChild,x) || findAncestor(root->rChild,x)){
+            cout << root -> data << " ";
+            return true;
+        }
+        }
 
     Node *arraytoTree(int *arr,int len, int i){
         if(i >= len || arr[i] == 0) return NULL;
@@ -64,7 +73,7 @@ public:
              if(n1->rChild){
                 Q.push(n1->rChild);
             }
-            
+
             }
         }
     }
@@ -87,5 +96,6 @@ int main(){
     cout << endl;
     b1.displayLevelorder();
     cout << endl;
+    b1.findAncestor(b1.root,13);
     return 0;
 }
