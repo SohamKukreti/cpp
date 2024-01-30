@@ -1,13 +1,15 @@
 #include <iostream>
 using namespace std;
 
+
+/*
 int merge(int * arr, int l, int m , int r){
 	int *left = new int[m-l + 1];
 	int *right = new int[r - m];
-	
+
 	int leftLen = m - l  + 1;
 	int rightLen = r - m;
-	
+
 	for(int i = 0;i < leftLen;i++){
 		left[i] = arr[i + l];
 	}
@@ -46,7 +48,7 @@ int merge(int * arr, int l, int m , int r){
 	}
 
 	return invCnt;
-	
+
 }
 
 int findInversions(int *arr, int l, int r){
@@ -60,6 +62,55 @@ int findInversions(int *arr, int l, int r){
 	}
 	return invCnt;
 }
+*/
+
+int merge(int *arr, int l, int m, int r){
+    int *temp = new int[r - l + 1];
+    int i = l;
+    int j = m + 1;
+    int k = 0;
+    int invCnt = 0;
+    while(i <= m && j <= r){
+        if(arr[i] <= arr[j]){
+            temp[k] = arr[i];
+            k++;
+            i++;
+        }
+        else{
+            temp[k] = arr[j];
+            k++;
+            j++;
+            invCnt += (m - i + 1);
+        }
+    }
+    while(i <= m){
+        temp[k] = arr[i];
+        k++;
+        i++;
+    }
+
+    while(j <= r){
+        temp[k] = arr[j];
+        k++;
+        j++;
+    }
+
+    for(int x = 0;x <= r;x++){
+        arr[x+l] = temp[x];
+    }
+    return invCnt;
+}
+
+int mergeSort(int *arr,int l, int r){
+    int invCnt = 0;
+    if(l>=r) return 0;
+    int mid = (l + r)/2;
+    invCnt = mergeSort(arr, l , mid);
+    invCnt += mergeSort(arr, mid + 1, r);
+    invCnt += merge(arr,l,mid,r);
+    return invCnt;
+
+}
 
 int main(){
 	int *arr;
@@ -70,7 +121,7 @@ int main(){
 	for(int i = 0;i < len; i++){
 		cin >> arr[i];
 	}
-	cout << findInversions(arr,0, len - 1) << endl;
+	cout << mergeSort(arr,0, len - 1) << endl;
 	for(int i = 0;i < len; i++){
 		cout << arr[i] << " ";
 	}
