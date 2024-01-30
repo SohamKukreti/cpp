@@ -104,9 +104,7 @@ public:
         if(head == NULL){
             head = l;
         }
-        else{
-            while
-        }
+      
         }
 
     };

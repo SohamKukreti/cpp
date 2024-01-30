@@ -98,6 +98,7 @@ return leftrotation(root);
         root = RightLeft(root);
     }
 }
+
 void insert(node*&root,int data)
 {
   if(root==NULL)
@@ -233,7 +234,8 @@ for(int i=0;i<7;i++)
  cout<<"node "<<root->data<<" got unbalanced ";
  balance(root,data);
 }
+
   inorder(root);
 }
  //LevelOrderTraversal(root);
-
+}

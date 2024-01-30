@@ -1,180 +1,95 @@
-#include <iostream>
-#include <queue>
-#include <stack>
+// C++ program to Count
+// Inversions in an array
+// using Merge Sort
+#include <bits/stdc++.h>
 using namespace std;
 
-struct Node{
-int data;
-Node *lChild;
-Node *rChild;
-};
+int _mergeSort(int arr[], int temp[], int left, int right);
+int merge(int arr[], int temp[], int left, int mid,
+		int right);
 
-class BinaryTree{
-public:
-    Node *root;
-    BinaryTree(){
-        root = NULL;
-    }
-    Node * createTree(int *arr,int len, int i){
-        if(i >= len || arr[i] == 0) return NULL;
-            Node *n1= new Node;
-            n1->data = arr[i];
-            if(i == 0){
-                root = n1;
-            }
-            n1->lChild = createTree(arr,len,2*i + 1);
-            n1->rChild = createTree(arr,len,2*i + 2);
-            return n1;
-        }
-    void displayPreorder(Node *root){
-        cout << root->data << " ";
-        if(root->lChild != NULL){
-            displayPreorder(root->lChild);
-        }
-        if(root->rChild != NULL){
-            displayPreorder(root->rChild);
-        }
-        }
+// This function sorts the
+// input array and returns the
+// number of inversions in the array
+int mergeSort(int arr[], int array_size)
+{
+	int temp[array_size];
+	return _mergeSort(arr, temp, 0, array_size - 1);
+}
 
-    void postordernon(){
-        stack <Node *> s1;
-        stack <Node *> s2;
-        s1.push(root);
-        while(!s1.empty()){
-            Node *temp = s1.top();
-            s2.push(temp);
-            s1.pop();
-            if (temp->lChild) s1.push(temp->lChild);
-            if (temp->rChild) s1.push(temp->rChild);
-        }
-        while(!s2.empty()){
-            cout << s2.top()->data << " ";
-            s2.pop();
-        }
-        }
+// An auxiliary recursive function
+// that sorts the input array and
+// returns the number of inversions in the array.
+int _mergeSort(int arr[], int temp[], int left, int right)
+{
+	int mid, inv_count = 0;
+	if (right > left) {
+		// Divide the array into two parts and
+		// call _mergeSortAndCountInv()
+		// for each of the parts
+		mid = (right + left) / 2;
 
-    void preorderNonRecursive(){
-        stack<Node *> s1;
-        s1.push(root);
-        while(!s1.empty()){
-            Node *temp = s1.top();
-            s1.pop();
-            cout << temp -> data << " ";
-            if(temp->rChild) s1.push(temp->rChild);
-            if(temp->lChild) s1.push(temp->lChild);
-        }
-        }
+		// Inversion count will be sum of
+		// inversions in left-part, right-part
+		// and number of inversions in merging
+		inv_count += _mergeSort(arr, temp, left, mid);
+		inv_count += _mergeSort(arr, temp, mid + 1, right);
 
-    void inorderNonRecursive(){
-        stack <Node *> s1;
-        Node * temp = root;
-        while(!s1.empty() || temp != NULL){
-            while(temp != NULL){
-                s1.push(temp);
-                temp = temp->lChild;
-            }
-            temp = s1.top();
-            cout << temp->data << " ";
-            s1.pop();
-            temp = temp->rChild;
-        }
-        }
+		// Merge the two parts
+		inv_count += merge(arr, temp, left, mid + 1, right);
+	}
+	return inv_count;
+}
 
-    void displayLevelOrder(Node *root,queue<Node *> Q){
-        if(root != NULL){
-            cout << root->data<< " ";
-            Q.push(root->lChild);
-            Q.push(root->rChild);
-            Node * temp = Q.front();
-            Q.pop();
-            displayLevelOrder(temp,Q);
-        }
+// This function merges two sorted arrays
+// and returns inversion count in the arrays.
+int merge(int arr[], int temp[], int left, int mid,
+		int right)
+{
+	int i, j, k;
+	int inv_count = 0;
 
-    }
-    void displayLevelOrder(){
-        queue <Node *> Q;
-        displayLevelOrder(root,Q);
-        }
+	i = left;
+	j = mid;
+	k = left;
+	while ((i <= mid - 1) && (j <= right)) {
+		if (arr[i] <= arr[j]) {
+			temp[k++] = arr[i++];
+		}
+		else {
+			temp[k++] = arr[j++];
 
+			// this is tricky -- see above
+			// explanation/diagram for merge()
+			inv_count = inv_count + (mid - i);
+		}
+	}
 
+	// Copy the remaining elements of left subarray
+	// (if there are any) to temp
+	while (i <= mid - 1)
+		temp[k++] = arr[i++];
 
-    void deleteNode(int x){
-        queue <Node *> Q;
-        Q.push(root);
-        while(!Q.empty()){
-            Node *temp = Q.front();
-            Q.pop();
-            if(temp->data == x){
-                Node *temp1 = temp;
-                temp = root;
-                while(temp->rChild != NULL){
-                    temp = temp->rChild;
-                }
-                temp1->data = temp->data;
-                delete temp;
-                break;
-            }
-            if(temp->lChild){
-                Q.push(temp->lChild);
-            }
-            if(temp->rChild){
-                Q.push(temp->rChild);
-            }
-        }
-    }
+	// Copy the remaining elements of right subarray
+	// (if there are any) to temp
+	while (j <= right)
+		temp[k++] = arr[j++];
 
+	// Copy back the merged elements to original array
+	for (i = left; i <= right; i++)
+		arr[i] = temp[i];
 
-    void insertNode(int x){
-        Node *n1 = new Node;
-        n1->data = x;
-        n1->lChild = NULL;
-        n1->rChild = NULL;
-        queue <Node *> Q;
-        Q.push(root);
-        while(!Q.empty()){
-            Node *temp = Q.front();
-            Q.pop();
-            if(temp->lChild){
-                Q.push(temp->lChild);
-            }
-            else{
-                temp->lChild = n1;
-                break;
-            }
-            if(temp->rChild){
-                Q.push(temp->rChild);
-            }
-            else{
-                temp->rChild = n1;
-                break;
-            }
+	return inv_count;
+}
 
-        }
-        }
-};
+// Driver code
+int main()
+{
+	int arr[] = {8, 4, 2, 1};
+	int n = sizeof(arr) / sizeof(arr[0]);
+	int ans = mergeSort(arr, n);
+	cout << " Number of inversions are " << ans;
+	return 0;
+}
 
-int main(){
-    int len;
-    cout << "Enter length : ";
-    cin >> len;
-    int arr[] = {10, 11 , 9, 7 , 0 , 15 ,8};
-    /*
-    cout << "Enter array : ";
-    for(int i = 0;i<len;i++){
-        cin >> arr[i];
-    }
-    */
-    BinaryTree b1;
-    b1.createTree(arr,len,0);
-    b1.insertNode(55);
-    b1.displayLevelOrder();
-    cout << endl;
-    b1.displayPreorder(b1.root);
-    cout  << endl;
-    b1.preorderNonRecursive();
-    cout << endl;
-    b1.inorderNonRecursive();
-    cout << endl;
-    b1.postordernon();
-    return 0;
-    }
+// This is code is contributed by rathbhupendra
